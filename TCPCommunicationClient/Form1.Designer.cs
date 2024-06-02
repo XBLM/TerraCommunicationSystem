@@ -48,6 +48,8 @@
             this.Mode = new System.Windows.Forms.ComboBox();
             this.AppInfo = new System.Windows.Forms.Label();
             this.HostIP = new System.Windows.Forms.ComboBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // recvMsg
@@ -199,6 +201,7 @@
             // Log
             // 
             this.Log.AcceptsReturn = true;
+            this.Log.BackColor = System.Drawing.SystemColors.Control;
             this.Log.Location = new System.Drawing.Point(13, 340);
             this.Log.Multiline = true;
             this.Log.Name = "Log";
@@ -238,9 +241,9 @@
             this.AppInfo.ForeColor = System.Drawing.Color.Blue;
             this.AppInfo.Location = new System.Drawing.Point(9, 770);
             this.AppInfo.Name = "AppInfo";
-            this.AppInfo.Size = new System.Drawing.Size(314, 44);
+            this.AppInfo.Size = new System.Drawing.Size(369, 44);
             this.AppInfo.TabIndex = 17;
-            this.AppInfo.Text = "TCPConnectClient  Version1.1.0_Beta\r\nPoweredBy Sibei@UESTC";
+            this.AppInfo.Text = "Terra灾后应急网络系统  Version1.1.2_Beta\r\nPoweredBy Sibei@UESTC";
             this.AppInfo.Click += new System.EventHandler(this.AppInfo_Click);
             // 
             // HostIP
@@ -251,11 +254,22 @@
             this.HostIP.Size = new System.Drawing.Size(260, 28);
             this.HostIP.TabIndex = 18;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox1.Location = new System.Drawing.Point(727, 758);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(162, 56);
+            this.pictureBox1.TabIndex = 19;
+            this.pictureBox1.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1087, 827);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.HostIP);
             this.Controls.Add(this.AppInfo);
             this.Controls.Add(this.Mode);
@@ -280,8 +294,9 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "TCPConnectClient";
+            this.Text = "Terra灾后应急网络系统";
             this.Load += new System.EventHandler(this.Form1_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -308,6 +323,7 @@
         private System.Windows.Forms.ComboBox Mode;
         private System.Windows.Forms.Label AppInfo;
         private System.Windows.Forms.ComboBox HostIP;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 
