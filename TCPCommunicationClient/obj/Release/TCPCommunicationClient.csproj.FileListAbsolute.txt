@@ -1,0 +1,10 @@
+D:\ProjectFile\VS_Project\ServerProgram\TCPCommunicationClient\obj\Release\TCPCommunicationClient.csproj.AssemblyReference.cache
+D:\ProjectFile\VS_Project\ServerProgram\TCPCommunicationClient\obj\Release\TCPCommunicationClient.Form1.resources
+D:\ProjectFile\VS_Project\ServerProgram\TCPCommunicationClient\obj\Release\TCPCommunicationClient.csproj.GenerateResource.cache
+D:\ProjectFile\VS_Project\ServerProgram\TCPCommunicationClient\obj\Release\TCPCommunicationClient.csproj.CoreCompileInputs.cache
+D:\ProjectFile\VS_Project\ServerProgram\TCPCommunicationClient\bin\Release\TCPConnectClient.exe.config
+D:\ProjectFile\VS_Project\ServerProgram\TCPCommunicationClient\bin\Release\TCPConnectClient.exe
+D:\ProjectFile\VS_Project\ServerProgram\TCPCommunicationClient\bin\Release\TCPConnectClient.pdb
+D:\ProjectFile\VS_Project\ServerProgram\TCPCommunicationClient\obj\Release\TCPConnectClient.exe
+D:\ProjectFile\VS_Project\ServerProgram\TCPCommunicationClient\obj\Release\TCPConnectClient.pdb
+D:\ProjectFile\VS_Project\ServerProgram\TCPCommunicationClient\obj\Release\TCPConnectClient.Properties.Resources.resources
