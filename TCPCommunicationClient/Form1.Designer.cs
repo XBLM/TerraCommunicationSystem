@@ -241,6 +241,7 @@
             this.AppInfo.Size = new System.Drawing.Size(314, 44);
             this.AppInfo.TabIndex = 17;
             this.AppInfo.Text = "TCPConnectClient  Version1.1.0_Beta\r\nPoweredBy Sibei@UESTC";
+            this.AppInfo.Click += new System.EventHandler(this.AppInfo_Click);
             // 
             // HostIP
             // 

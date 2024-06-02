@@ -278,5 +278,10 @@ namespace TCPCommunicationClient
         {
 
         }
+
+        private void AppInfo_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("TCPConnectClient V1.1.0\r\nCopyright © AyakaSoft 2024", "软件信息", MessageBoxButtons.OK,MessageBoxIcon.Information);
+        }
     }
 }
