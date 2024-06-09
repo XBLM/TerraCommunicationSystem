@@ -5,8 +5,10 @@ using System.Drawing;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Linq;
 using System.Net.NetworkInformation;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace TCPCommunicationClient
 {
@@ -20,6 +22,8 @@ namespace TCPCommunicationClient
         Socket sClient;
         //缓冲区长度
         int bufferLength = 1024*8;
+        //客户端Socket链表
+        List<Socket> clientSocket = new List<Socket>(); 
 
         public Form1()
         {
@@ -41,12 +45,47 @@ namespace TCPCommunicationClient
                     //客户端
                     int byteNum = _socket.Send(text);
                     outputLog(string.Format("{0}byte数据已发送", byteNum));
+                    if (sendMsg.Text == "exit")
+                    {
+                        outputLog("连接已断开");
+                        cancelTask = true;
+                        _socket.Close();
+                        _socket = null;
+                        ConnectionStatus.Text = "连接状态：未连接";
+                        ConnectionStatus.ForeColor = Color.Red;
+                        return;
+                    }
                 }
                 else
                 {
                     //服务端
-                    int byteNum = sClient.Send(text);
-                    outputLog(string.Format("{0}byte数据已发送", byteNum));
+                    if(TargetClient.SelectedIndex == 0)
+                    {
+                        foreach(var sc in clientSocket)
+                        {
+                            outputLog(string.Format("{0}byte数据已发送 To:{1}", sc.Send(text), 
+                                sc.LocalEndPoint.ToString()));
+                        }
+                    }
+                    else
+                    {
+                        Socket sc = clientSocket[TargetClient.SelectedIndex - 1];
+                        outputLog(string.Format("{0}byte数据已发送 To:{1}", sc.Send(text),
+                                sc.LocalEndPoint.ToString()));
+                    }
+                    if (sendMsg.Text == "exit")
+                    {
+                        outputLog("连接已断开");
+                        cancelTask = true;
+                        foreach(var sc in clientSocket)
+                        {
+                            sc.Close();
+                        }
+                        clientSocket.Clear();
+                        ConnectionStatus.Text = "连接状态：未连接";
+                        ConnectionStatus.ForeColor = Color.Red;
+                        return;
+                    }
                 }
 
             }
@@ -171,7 +210,11 @@ namespace TCPCommunicationClient
                 //服务端
                 outputLog("已关闭监听");
                 cancelTask = true;
-                sClient.Send(Encoding.UTF8.GetBytes("exit"));
+                try
+                {
+                    sClient.Send(Encoding.UTF8.GetBytes("exit"));
+                }
+                catch (Exception) { };
                 _socket.Close();
                 _socket = null;
             }
@@ -179,8 +222,11 @@ namespace TCPCommunicationClient
             {
                 //客户端
                 outputLog("已关闭连接");
-                cancelTask = true;
-                _socket.Send(Encoding.UTF8.GetBytes("exit"));
+                cancelTask = true; try
+                {
+                    _socket.Send(Encoding.UTF8.GetBytes("exit"));
+                }
+                catch (Exception) { };
                 _socket.Close();
                 _socket = null;
             }
@@ -225,37 +271,49 @@ namespace TCPCommunicationClient
             {
                 outputLog("正在等待连接...");
                 sClient = _socket.Accept();
+                clientSocket.Add(sClient);
                 outputLog(string.Format("连接到{0}\r\n正在接收数据...", 
                     sClient.RemoteEndPoint.ToString()));
                 //更新状态
                 ConnectionStatus.Text = "连接状态：已连接";
                 ConnectionStatus.ForeColor = Color.Green;
+                RefreshTargetClientComboBox();
                 //向对面机器发送欢迎
                 sClient.Send(Encoding.UTF8.GetBytes(string.Format("你好，{0}", 
                     sClient.RemoteEndPoint.ToString())));
-                while (!cancelTask)
+                Task.Factory.StartNew(() =>
                 {
-                    byteNum = sClient.Receive(buffer);
-                    string recvString = Encoding.UTF8.GetString(buffer).Trim();
-                    buffer = new byte[bufferLength];
-                    outputLog(string.Format("接收到{0}byte数据", byteNum));
-                    recvMsg.AppendText(string.Format("\r\n\r\n<{0}>\r\n{1}", 
-                        DateTime.Now.ToString(), recvString));
-                    if (string.Compare(recvString, "exit") == 0)
-                    {
-                        outputLog("连接已断开，继续监听中...");
-                        sClient.Close();
-                        sClient = null;
-                        ConnectionStatus.Text = "连接状态：未连接";
-                        ConnectionStatus.ForeColor = Color.Red;
-                        break;
-                    }
-                    if (recvString[0].ToString() != "*")
-                        sClient.Send(Encoding.UTF8.GetBytes(string.Format("*接收到{0}byte数据", 
-                            byteNum)));
-                }
+                    RecvFuncSever(sClient);
+                });
             }
             return;
+        }
+
+        private void RecvFuncSever(Socket sClient)
+        {
+            int byteNum = 0;
+            byte[] buffer = new byte[bufferLength];
+            while(!cancelTask)
+            {
+                byteNum = sClient.Receive(buffer);
+                string recvString = Encoding.UTF8.GetString(buffer).Trim();
+                buffer = new byte[bufferLength];
+                outputLog(string.Format("接收到{0}byte数据", byteNum));
+                recvMsg.AppendText(string.Format("\r\n\r\n<{0}>\r\n{1} 说:\r\n{2}",
+                    DateTime.Now.ToString(), sClient.LocalEndPoint.ToString(), recvString));
+                if (string.Compare(recvString, "exit") == 0)
+                {
+                    outputLog("连接已断开，继续监听中...");
+                    sClient.Close();
+                    sClient = null;
+                    ConnectionStatus.Text = "连接状态：未连接";
+                    ConnectionStatus.ForeColor = Color.Red;
+                    break;
+                }
+                if (recvString[0].ToString() != "*")
+                    sClient.Send(Encoding.UTF8.GetBytes(string.Format("*接收到{0}byte数据",
+                        byteNum)));
+            }
         }
 
         private void RecvFunc()
@@ -317,6 +375,15 @@ namespace TCPCommunicationClient
         private void AppInfo_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Terra灾后应急网络系统 V1.1.2\r\n基于TCPConnectClient\r\nCopyright © AyakaSoft 2024", "软件信息", MessageBoxButtons.OK,MessageBoxIcon.Information);
+        }
+
+        private void RefreshTargetClientComboBox()
+        {
+            int i = TargetClient.SelectedIndex;
+            TargetClient.Items.Clear();
+            TargetClient.Items.Add("广播给所有用户");
+            TargetClient.Items.Add(clientSocket);
+            TargetClient.SelectedIndex = i;
         }
     }
 }

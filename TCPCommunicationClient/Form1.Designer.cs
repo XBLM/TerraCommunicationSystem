@@ -49,6 +49,7 @@
             this.AppInfo = new System.Windows.Forms.Label();
             this.HostIP = new System.Windows.Forms.ComboBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.TargetClient = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -264,11 +265,21 @@
             this.pictureBox1.TabIndex = 19;
             this.pictureBox1.TabStop = false;
             // 
+            // TargetClient
+            // 
+            this.TargetClient.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.TargetClient.FormattingEnabled = true;
+            this.TargetClient.Location = new System.Drawing.Point(371, 389);
+            this.TargetClient.Name = "TargetClient";
+            this.TargetClient.Size = new System.Drawing.Size(365, 28);
+            this.TargetClient.TabIndex = 20;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1087, 827);
+            this.Controls.Add(this.TargetClient);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.HostIP);
             this.Controls.Add(this.AppInfo);
@@ -324,6 +335,7 @@
         private System.Windows.Forms.Label AppInfo;
         private System.Windows.Forms.ComboBox HostIP;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.ComboBox TargetClient;
     }
 }
 
